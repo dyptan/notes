@@ -1,0 +1,30 @@
+name := "mapr-streams"
+
+version := "0.1"
+
+scalaVersion := "2.11.12"
+
+resolvers ++= Seq(
+//  "maven-repo" at "https://mvnrepository.com/artifact/",
+  "MapR Repository" at "http://repository.mapr.com/maven/",
+//  "apache repo" at "https://repo1.maven.org/maven2"
+  "jboss" at "https://repository.jboss.org/"
+)
+
+val sparkVersion = "2.3.1-mapr-1808"
+
+//val kafkaVersion = "1.1.1-mapr"
+//libraryDependencies += "org.apache.spark" %% "spark-core" %"2.4.0"
+
+libraryDependencies += "org.apache.spark" % "spark-streaming_2.11" % sparkVersion
+
+libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion
+
+libraryDependencies += "org.apache.spark" % "spark-sql_2.11" % sparkVersion
+
+libraryDependencies += "org.apache.spark" % "spark-streaming-kafka-producer_2.11" % sparkVersion
+
+libraryDependencies += "org.apache.kafka" % "kafka-clients" % "1.1.1-mapr-1808"
+
+//retrieveManaged := true
+//unmanagedBase := baseDirectory.value / "lib_unmanaged"
