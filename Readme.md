@@ -1,5 +1,7 @@
 ## MAPR
 
+#### Repositories
+
 ```
 https://package.mapr.com/releases/v6.1.0/ubuntu/dists/binary/Release.gpg
 deb https://package.mapr.com/releases/MEP/MEP-6.0/ubuntu binary trusty
@@ -72,6 +74,14 @@ grep -R org.apache.tez.runtime.api.Event ./
 
 ```
 ls tez_lib_bkp/ | sed 's/2.7.0-mapr-1710.jar/*/g' | while read file; do find /opt/mapr/hadoop -name $file | grep -v "test\|sources" |head -1 ; done | xargs cp -t /opt/mapr/tez/tez-0.8/lib/
+```
+
+
+## Kubernetes
+
+#### Ping nodes
+```
+ kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 ```
 
 ## HADOOP
