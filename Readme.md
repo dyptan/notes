@@ -113,6 +113,8 @@ hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce
 ```
 #### If there is no external metastore:
 `./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
+#### run HS with spar-submit
+`\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
 
 #### load data
 ```
