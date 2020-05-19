@@ -19,19 +19,22 @@ maprcli node services -name hivemeta -action restart -nodes `hostname -f`
 ```
 
 #### managing ElasticStreams
-
+create
 ```
 maprcli stream create -path /user/mapr/pump -produceperm u:mapr -consumeperm u:mapr -topicperm u:mapr
-maprcli stream topic create -path /user/mapr/pump -topic input -partitions 3
-maprcli stream topic create -path /user/mapr/pump -topic alert -partitions 3
+maprcli stream topic create -path /user/mapr/pump -topic topic0 -partitions 4
+```
+Populate with data 
+```
+while (:); do mapr perfproducer -ntopics 1 -path /user/mapr/pump -nmsgs 50 -npart 4 -rr true; done
 ```
 #### debugging ES
 ```
-maprcli stream topic info -path /user/mapr/pump -topic alert -json
 maprcli stream info -path /user/mapr/pump
 maprcli stream topic list -path /user/mapr/pump -json
-maprcli stream cursor list -path /user/mapr/pump -topic alert -json
-maprcli stream assign list -path /user/mapr/pump -topic alert -json
+maprcli stream topic info -path /user/mapr/pump -topic topic0 -json
+maprcli stream cursor list -path /user/mapr/pump -topic topic0 -json
+maprcli stream assign list -path /user/mapr/pump -topic topic0 -json
 
 mapr streamanalyzer -path /user/mapr/pump -printMessages true
 ```
