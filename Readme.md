@@ -59,6 +59,11 @@ usermod -a -G sudo mapr
 sudo usermod -g 1001 -u 1001 ivan
 ```
 
+#### Add permanent routes in Centos7
+```
+echo "192.168.0.0/24 via 192.168.33.1" | sudo tee --append /etc/sysconfig/network-scripts/route-eth0
+```
+
 #### Yum
 
 ```
