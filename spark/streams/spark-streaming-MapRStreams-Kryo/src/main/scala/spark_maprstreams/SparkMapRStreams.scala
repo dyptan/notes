@@ -95,7 +95,6 @@ object SparkMapRStreams {
     val sparkConf = new SparkConf()
       .setAppName(SparkMapRStreams.getClass.getName)
       .set("spark.streaming.kafka.consumer.poll.ms", kafkaPollTimeoutMsec)
-     // .setJars(Array("/mapr/cluster1/user/mrsw/vertica/jar/vertica-jdbc-9.0.0-0.jar","/mapr/cluster1/user/mrsw/vertica/jar/tomcat-jdbc.jar", "/mapr/cluster1/user/mrsw/vertica/jar/tomcat-juli.jar"))
     val ssc = new StreamingContext(sparkConf, Seconds(streamBatchIntervalSec))
 
     // BUG? it does not work.
