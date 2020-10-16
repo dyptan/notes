@@ -7,6 +7,7 @@ https://package.mapr.com/releases/v6.1.0/ubuntu/dists/binary/Release.gpg
 deb https://package.mapr.com/releases/MEP/MEP-6.0/ubuntu binary trusty
 deb https://package.mapr.com/releases/v6.0.0/ubuntu binary trusty
 ```
+export MAPR_MAVEN_REPO=http://maven.corp.maprtech.com/nexus/content/groups/public
 
 #### Service management
 
