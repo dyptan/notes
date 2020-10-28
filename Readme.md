@@ -127,6 +127,11 @@ hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce
 #### run HS with spar-submit
 `\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
 
+#### Remove class from JIT compilations
+`--conf
+spark.executor.extraJavaOptions="-XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator  -XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator.*"
+`
+
 #### load data
 ```
 val fifaDF = spark.read.option("header", true).csv("/tmp/data.csv")
