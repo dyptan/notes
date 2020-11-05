@@ -73,6 +73,11 @@ sudo yum clean all
 sudo yum list --showduplicates mapr-tez
 ```
 
+#### RPM - how to check install script for package
+```
+rpm -qlp --scripts mapr-spark-thriftserver-2.4.4.0.201912121413-1.noarch.rpm
+```
+
 #### Search class
 
 ```
