@@ -14,8 +14,6 @@ export MAPR_MAVEN_REPO=http://maven.corp.maprtech.com/nexus/content/groups/publi
 ```
 maprcli node list -columns service
 maprcli node services -cluster `hostname -f` restart
-maprcli node services -name resourcemanager -action restart -nodes `hostname -f`
-maprcli node services -name hs2 -action stop -nodes `hostname -f`
 maprcli node services -name hivemeta -action restart -nodes `hostname -f`
 ```
 
@@ -47,8 +45,8 @@ mapr streamanalyzer -path /user/mapr/pump -printMessages true
 ```
 ulimit -Ha (shows all global limits for current user)
 ps -U mapr -L | wc -l (will give you the number of running threads)
-ls /proc/<RM PID>/fd | wc -l (the number of opened files and connections for RM)
-lsof -umapr | wc -l (the count of utilized FDs out of available pool)
+ls /proc/<PID>/fd | wc -l (the number of opened files and connections for PID)
+sudo lsof -u mapr  | egrep -v "mem|DEL|cwd|rtd|txt" | wc -l #the count of utilized FDs out of available pool
 ```
 
 #### user managenent
@@ -66,19 +64,20 @@ echo "192.168.0.0/24 via 192.168.33.1" | sudo tee --append /etc/sysconfig/networ
 sudo systemctl restart network
 ```
 
-#### Yum
+#### Yum/RPM
 
+cleanup cache
 ```
 sudo yum clean all
 sudo yum list --showduplicates mapr-tez
 ```
 
-#### RPM - how to check install script for package
+check the install script for package
 ```
 rpm -qlp --scripts mapr-spark-thriftserver-2.4.4.0.201912121413-1.noarch.rpm
 ```
 
-#### Search class
+#### Search class in multiple Jars
 
 ```
 for i in *.jar; do jar -tvf "$i" | grep -Hsi ClassName && echo "$i"; done
@@ -120,24 +119,26 @@ hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce
 
 ## SPARK
 
-#### enable FS debug and OOM dump
+enable FS debug and OOM dump
 ```
 /opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
  --conf spark.hadoop.fs.mapr.trace=debug
  --conf spark.hadoop.fs.mapr.slowops.threshold=debug 
  --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
 ```
-#### If there is no external metastore:
+
+If there is no external metastore:
 `./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
-#### run HS with spar-submit
+
+run HS with spar-submit
 `\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
 
-#### Remove class from JIT compilations
+Remove class from JIT compilations
 `--conf
 spark.executor.extraJavaOptions="-XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator  -XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator.*"
 `
 
-#### load data
+load some data
 ```
 val fifaDF = spark.read.option("header", true).csv("/tmp/data.csv")
 import org.apache.spark.sql
@@ -147,7 +148,7 @@ val fifaAvgAge = fifaFromParDF.groupBy().avg("age")
 fifaAvgAge.toJSON.rdd.saveAsTextFile("/tmp/fifa/out_json")
 ```
 
-#### Run multiple executors at once
+Run multiple executors at once
 
 ```
 for (( c=1; c<=5; c++ ))
@@ -199,6 +200,6 @@ $OOZIE_HOME/bin/oozie job -info <id>
 $OOZIE_HOME/bin/oozie job -log <id>
 ```
 
-#### CSVs
+#### Some sources
 
 curl -O https://raw.githubusercontent.com/amanthedorkknight/fifa18-all-player-statistics/master/2019/data.csv
