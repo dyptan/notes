@@ -1,9 +1,10 @@
 import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 object Stream {
 
-  val spark = org.apache.spark.sql.SparkSession.builder().appName("test").master("local[1]").getOrCreate()
+  val spark = SparkSession.builder().appName("test").master("local[1]").getOrCreate()
 
 
   def readFromES() = {
