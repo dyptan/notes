@@ -7,28 +7,22 @@ import org.apache.kafka.common.TopicPartition
 
 object App {
   def main(args: Array[String]): Unit = {
-    //    val kafkaParams = new ju.HashMap[String, Object]()
-    //    kafkaParams.put("key.deserializer", Class.forName("org.apache.kafka.common.serialization.ByteArrayDeserializer"))
-    //    kafkaParams.put("value.deserializer", Class.forName("org.apache.kafka.common.serialization.StringDeserializer"))
-    //    kafkaParams.put("enable.auto.commit", false)
-    //    kafkaParams.put("group.id", "rsm.bigdata.elastic.indexer")
-    //    kafkaParams.put("max.partition.fetch.bytes", 5242880)
-    //    kafkaParams.put("auto.offset.reset", "earliest")
+
     val kafkaParams = new ju.HashMap[String, Object]()
     kafkaParams.put("key.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer")
     kafkaParams.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
     kafkaParams.put("enable.auto.commit", "false")
-    kafkaParams.put("group.id", "rsm.bigdata.elastic.indexer")
+    kafkaParams.put("group.id", "subsgroup")
     kafkaParams.put("max.partition.fetch.bytes", "5242880")
     kafkaParams.put("auto.offset.reset", "earliest")
 
-    val topicPartition1 = new TopicPartition("/app/lois/dev3/private/mapres/sparkbug/stream1:t", 0)
-    val topicPartition2 = new TopicPartition("/app/lois/dev3/private/mapres/sparkbug/stream1:t", 1)
+    val topicPartition1 = new TopicPartition("/user/mapr/pump:topic0", 0)
+    val topicPartition2 = new TopicPartition("/user/mapr/pump:topic0", 1)
 
     val consumer = new KafkaConsumer[Any, Any](kafkaParams)
 
     val topics = new ju.ArrayList[String];
-    topics.add("/app/lois/dev3/private/mapres/sparkbug/stream1:t")
+    topics.add("/user/mapr/pump:topic0")
     consumer.subscribe(topics)
 
     val currentOffsets = Map(topicPartition1 -> 0, topicPartition2 -> 0)

@@ -19,11 +19,11 @@
         <rsm.bigdata.pom.version>3.0.0</rsm.bigdata.pom.version>
 
         <spark.version>2.3.1-mapr-1808</spark.version>
-        <hbase.version>1.1.8-mapr-1808</hbase.version>
+        <!-- <hbase.version>1.1.8-mapr-1808</hbase.version> -->
         <hadoop.common>2.7.0-mapr-1808</hadoop.common>
         <hdfs.version>2.7.0-mapr-1808</hdfs.version>
         <kafka.clients>1.1.1-mapr-1808</kafka.clients>
-        <maprdb.cdc>6.1.0-mapr</maprdb.cdc>
+        <!-- <maprdb.cdc>6.1.0-mapr</maprdb.cdc> -->
 
         <slf4j.version>1.7.21</slf4j.version>
     </properties>
@@ -248,7 +248,7 @@
                 <scope>provided</scope>
             </dependency>
 
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-hive_2.11</artifactId>
                 <version>${spark.version}</version>
@@ -259,14 +259,14 @@
                         <groupId>org.codehaus.groovy</groupId>
                     </exclusion>
                 </exclusions>
-            </dependency>
+            </dependency> -->
 
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-mllib_2.11</artifactId>
                 <version>${spark.version}</version>
                 <scope>provided</scope>
-            </dependency>
+            </dependency> -->
 
             <!-- kafka dependencies -->
             <dependency>
@@ -290,7 +290,7 @@
             </dependency>
 
             <!-- MapR HBase dependencies -->
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.apache.hbase</groupId>
                 <artifactId>hbase-server</artifactId>
                 <version>${hbase.version}</version>
@@ -321,16 +321,14 @@
                         <artifactId>jasper-compiler</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
+            </dependency> -->
 
-            <dependency>
+            <!-- <dependency>
                 <groupId>org.apache.hbase</groupId>
                 <artifactId>hbase-client</artifactId>
                 <version>${hbase.version}</version>
                 <scope>provided</scope>
-                <!-- Exclude org.mortbay.jetty servlet api dependency to prevent conflict
-                    with Spark leading to java.lang.SecurityException with FilterRegistration -->
-                <!-- see http://stackoverflow.com/questions/28086520/spark-application-throws-javax-servlet-filterregistration -->
+              
                 <exclusions>
                     <exclusion>
                         <groupId>org.mortbay.jetty</groupId>
@@ -345,9 +343,9 @@
                         <artifactId>jdk.tools</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
+            </dependency> -->
 
-            <dependency>
+            <!-- <dependency>
                 <groupId>com.mapr.db</groupId>
                 <artifactId>maprdb-cdc</artifactId>
                 <version>${maprdb.cdc}</version>
@@ -355,10 +353,10 @@
             <dependency>
                 <groupId>org.glassfish.jersey</groupId>
                 <artifactId>jersey-bom</artifactId>
-                <version>2.22.2</version> <!-- Version in Spark 2.3 -->
+                <version>2.22.2</version> 
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
+            </dependency> -->
         </dependencies>
     </dependencyManagement>
 
@@ -384,12 +382,10 @@
             <artifactId>spark-streaming-kafka-producer_2.11</artifactId>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
-            <!-- Exclude org.mortbay.jetty servlet api dependency to prevent conflict
-                with Spark leading to java.lang.SecurityException with FilterRegistration -->
-            <!-- see http://stackoverflow.com/questions/28086520/spark-application-throws-javax-servlet-filterregistration -->
+            
             <exclusions>
                 <exclusion>
                     <groupId>org.mortbay.jetty</groupId>
@@ -412,7 +408,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Provided Dependencies for Exclusions -->
+     
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
@@ -447,7 +443,7 @@
             <groupId>org.slf4j</groupId>
             <version>${slf4j.version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
 </project>
