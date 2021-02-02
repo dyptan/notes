@@ -35,14 +35,18 @@ resolvers ++= Seq(
 )
 
 // Spark libs are unmanaged (linked lib -> /opt/mapr/spark/spark-2.2.1/jars)
-// val sparkVersion = "2.2.1-mapr-2009"
+val sparkVersion = "2.2.1-mapr-2009"
 // libraryDependencies += "org.apache.spark" % "spark-streaming_2.11" % sparkVersion
 // libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion
-// libraryDependencies += "org.apache.spark" % "spark-sql_2.11" % sparkVersion
+libraryDependencies += "org.apache.spark" % "spark-sql_2.11" % sparkVersion
 // libraryDependencies += "org.apache.spark" % "spark-streaming-kafka-producer_2.11" % sparkVersion
 // libraryDependencies += "org.apache.kafka" % "kafka-clients" % "1.1.1-mapr-1808"
 
-libraryDependencies += "org.apache.hadoop" % "hadoop-common" % "2.7.0-mapr-1803"
-libraryDependencies += "org.apache.hadoop" % "hadoop-hdfs" % "2.7.0-mapr-1803"
-libraryDependencies += "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.0-mapr-1803"
-libraryDependencies += "com.mapr.streams" % "mapr-streams" % "6.0.1-mapr"
+// libraryDependencies += "org.apache.hadoop" % "hadoop-common" % "2.7.0-mapr-1803"
+// libraryDependencies += "org.apache.hadoop" % "hadoop-hdfs" % "2.7.0-mapr-1803"
+// libraryDependencies += "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "2.7.0-mapr-1803"
+// libraryDependencies += "com.mapr.streams" % "mapr-streams" % "6.0.1-mapr"
+// libraryDependencies += "org.apache.spark" % "spark-streaming-kafka-0-10_2.11" % "2.2.1"
+
+unmanagedJars in Compile ++= 
+  (file("/opt/mapr/lib") * "*.jar").classpath
