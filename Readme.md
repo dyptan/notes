@@ -8,7 +8,7 @@
 #### Repositories
 
 ```
-https://package.mapr.com/releases/v6.1.0/ubuntu/dists/binary/Release.gpg
+wget -O - https://package.mapr.com/releases/pub/maprgpg.key | sudo apt-key add -
 deb https://package.mapr.com/releases/MEP/MEP-6.0/ubuntu binary trusty
 deb https://package.mapr.com/releases/v6.0.0/ubuntu binary trusty
 ```
