@@ -53,6 +53,14 @@ ps -U mapr -L | wc -l (will give you the number of running threads)
 ls /proc/<PID>/fd | wc -l (the number of opened files and connections for PID)
 sudo lsof -u mapr  | egrep -v "mem|DEL|cwd|rtd|txt" | wc -l #the count of utilized FDs out of available pool
 ```
+System utilisation metrics
+```
+iostat -cdmx 1  | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' >> /opt/mapr/logs/iostat.$HOSTNAME.out 2>&1 & 
+mpstat -P ALL 1 | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' >> /opt/mapr/logs/mpstat.$HOSTNAME.out 2>&1 &
+vmstat -n -SM 1 | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' >> /opt/mapr/logs//vmstat.$HOSTNAME.out 2>&1 &
+top -b -H -d 1 | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' >> /opt/mapr/logs/top.threads.$HOSTNAME.out 2>&1 &
+top -b -d 1 | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' | grep -v -e " 0\.0 *0\.0 " >> /opt/mapr/logs/top.processes.$HOSTNAME.out 2>&1 &
+```
 
 #### user managenent
 
