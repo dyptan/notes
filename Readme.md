@@ -12,7 +12,7 @@ wget -O - https://package.mapr.com/releases/pub/maprgpg.key | sudo apt-key add -
 deb https://package.mapr.com/releases/MEP/MEP-6.0/ubuntu binary trusty
 deb https://package.mapr.com/releases/v6.0.0/ubuntu binary trusty
 ```
-export MAPR_MAVEN_REPO=http://maven.corp.maprtech.com/nexus/content/groups/public
+export MAPR_MAVEN_REPO=http://dfaf.mip.storage.hpecorp.net/artifactory/maven-corp/
 
 #### Service management
 
