@@ -124,10 +124,7 @@ yarn application -appStates FINISHED -list
 #### MapReduce
 
 ```
-hadoop fs -mkdir -p /user/mapr/mapreduce
-hadoop fs -put /opt/mapr/hadoop/hadoop-2.7.0/NOTICE.txt /user/mapr/mapreduce/
-hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0-mapr-1803.jar wordcount  /user/mapr/mapreduce/NOTICE.txt /user/mapr/mapreduce/out
-hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0-mapr-1808.jar sleep -m 1 -mt 60000 -r 1 -rt 60000
+hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0-mapr-1808.jar pi 4 100
 ```
 
 ## SPARK
