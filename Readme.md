@@ -131,6 +131,7 @@ hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce
 
 enable FS debug and OOM dump
 ```
+export SPARK_PRINT_LAUNCH_COMMAND=1
 /opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
  --conf spark.hadoop.fs.mapr.trace=debug
  --conf spark.hadoop.fs.mapr.slowops.threshold=debug 
