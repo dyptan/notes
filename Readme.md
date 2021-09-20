@@ -1,11 +1,11 @@
-# Contents
+# 1. Contents
  - [Hadoop](#hadoop) 
  - [Linux](#linux) 
  - [Spark](#spark)
 
-## MAPR
+## 1.1. MAPR
 
-#### Repositories
+#### 1.1.0.1. Repositories
 
 ```
 https://package.mapr.com/releases/v6.1.0/ubuntu/dists/binary/Release.gpg
@@ -14,7 +14,7 @@ deb https://package.mapr.com/releases/v6.0.0/ubuntu binary trusty
 ```
 export MAPR_MAVEN_REPO=http://maven.corp.maprtech.com/nexus/content/groups/public
 
-#### Service management
+#### 1.1.0.2. Service management
 
 ```
 maprcli node list -columns service
@@ -22,7 +22,7 @@ maprcli node services -cluster `hostname -f` restart
 maprcli node services -name hivemeta -action restart -nodes `hostname -f`
 ```
 
-#### managing ElasticStreams
+#### 1.1.0.3. managing ElasticStreams
 create
 ```
 maprcli stream create -path /user/mapr/pump -produceperm u:mapr -consumeperm u:mapr -topicperm u:mapr
@@ -32,7 +32,7 @@ Populate with data
 ```
 while (:); do mapr perfproducer -ntopics 1 -path /user/mapr/pump -nmsgs 50 -npart 4 -rr true; done
 ```
-#### debugging ES
+#### 1.1.0.4. debugging ES
 ```
 maprcli stream info -path /user/mapr/pump
 maprcli stream topic list -path /user/mapr/pump -json
@@ -43,9 +43,33 @@ maprcli stream assign list -path /user/mapr/pump -topic topic0 -json
 mapr streamanalyzer -path /user/mapr/pump -printMessages true
 ```
 
-## Linux 
 
-#### System resources limits check
+1) Collecting cursor position, assignments, regeion with timestamps:
+```
+  maprcli stream cursor list -path -json | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}'>> stream_cursor.txt
+  maprcli stream assign list -path -json | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}'>> stream_assign.txt
+  maprcli table region list -path -json | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}'>> table_region.txt
+```
+
+2) Enable Stream DEBUG :
+```
+maprcli trace setlevel -module Marlin -level DEBUG
+maprcli trace setlevel -module MarlinLG -level DEBUG
+```
+
+3) Run standalone java consumer with fs.mapr.trace=DEBUG enabled.
+
+https://github.com/vinaymeghraj/myprojects/blob/master/YuCodesJava/src/main/java/consumer/SampleConsumerPrint.java
+
+4) Collect /opt/mapr/logs/mfs* logs from all the nodes.
+
+5) Collect the file client debug from step#3
+
+6) Output of command : rpm -qa | grep mapr 
+
+## 1.2. Linux 
+
+#### 1.2.0.1. System resources limits check
 
 ```
 ulimit -Ha (shows all global limits for current user)
@@ -54,7 +78,7 @@ ls /proc/<PID>/fd | wc -l (the number of opened files and connections for PID)
 sudo lsof -u mapr  | egrep -v "mem|DEL|cwd|rtd|txt" | wc -l #the count of utilized FDs out of available pool
 ```
 
-#### user managenent
+#### 1.2.0.2. user managenent
 
 ```
 groupadd -g 5000 mapr
@@ -63,13 +87,13 @@ usermod -a -G sudo mapr
 sudo usermod -g 1001 -u 1001 ivan
 ```
 
-#### Add permanent routes in Centos7
+#### 1.2.0.3. Add permanent routes in Centos7
 ```
 echo "192.168.0.0/24 via 192.168.33.1" | sudo tee --append /etc/sysconfig/network-scripts/route-enp0s8
 sudo systemctl restart network
 ```
 
-#### Yum/RPM
+#### 1.2.0.4. Yum/RPM
 
 cleanup cache
 ```
@@ -82,30 +106,30 @@ check the install script for package
 rpm -qlp --scripts mapr-spark-thriftserver-2.4.4.0.201912121413-1.noarch.rpm
 ```
 
-#### Search class in multiple Jars
+#### 1.2.0.5. Search class in multiple Jars
 
 ```
 for i in *.jar; do jar -tvf "$i" | grep -Hsi ClassName && echo "$i"; done
 grep -R org.apache.tez.runtime.api.Event ./
 ```
 
-#### Replace Hadoop lib jars used by Tez with corresponding jars in Hadoop lib directories.
+#### 1.2.0.6. Replace Hadoop lib jars used by Tez with corresponding jars in Hadoop lib directories.
 
 ```
 ls tez_lib_bkp/ | sed 's/2.7.0-mapr-1710.jar/*/g' | while read file; do find /opt/mapr/hadoop -name $file | grep -v "test\|sources" |head -1 ; done | xargs cp -t /opt/mapr/tez/tez-0.8/lib/
 ```
 
 
-## Kubernetes
+## 1.3. Kubernetes
 
-#### Ping nodes
+#### 1.3.0.1. Ping nodes
 ```
  kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 ```
 
-## HADOOP
+## 1.4. HADOOP
 
-#### Yarn
+#### 1.4.0.1. Yarn
 
 ```
 yarn daemonlog -setlevel maprdemo:8088 org.apache.hadoop DEBUG
@@ -113,7 +137,7 @@ yarn logs -applicationId application_1528173243110_0007
 yarn application -appStates FINISHED -list
 ```
 
-#### MapReduce
+#### 1.4.0.2. MapReduce
 
 ```
 hadoop fs -mkdir -p /user/mapr/mapreduce
@@ -122,7 +146,7 @@ hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce
 hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0-mapr-1808.jar sleep -m 1 -mt 60000 -r 1 -rt 60000
 ```
 
-## SPARK
+## 1.5. SPARK
 
 enable FS debug and OOM dump
 ```
@@ -164,7 +188,7 @@ done
 while true; do ps -ef  | grep 24106; sleep 1; done
 ```
 
-## KAFKA
+## 1.6. KAFKA
 
 ```
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
@@ -172,7 +196,7 @@ bin/kafka-topics.sh --list --zookeeper localhost:2181
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test
 ```
 
-## HIVE
+## 1.7. HIVE
 
 ```
 CREATE TABLE students (name VARCHAR(64), age INT, gpa DECIMAL(3, 2));
@@ -181,7 +205,7 @@ create view myview as select * from students where age > 33;
 
 CREATE OR REPLACE VIEW myview as select * from students where age < 33;
 ```
-## OOZIE
+## 1.8. OOZIE
 
 ```
 oozie admin -oozie http://localhost:11000/oozie -shareliblist hive*
@@ -205,6 +229,6 @@ $OOZIE_HOME/bin/oozie job -info <id>
 $OOZIE_HOME/bin/oozie job -log <id>
 ```
 
-#### Some sources
+#### 1.8.0.1. Some sources
 
 curl -O https://raw.githubusercontent.com/amanthedorkknight/fifa18-all-player-statistics/master/2019/data.csv
