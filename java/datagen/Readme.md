@@ -1,12 +1,16 @@
-Test MaprDB secondary index performance
+Compile Jar:
+mvn package
 
-`java -jar dataGen-BETA-jar-with-dependencies.jar JsonBuilder 100000`
+`java -jar dataGen-BETA-jar-with-dependencies.jar 100000 "/tmp/dummy.json"`
 
 
 ```
   hadoop fs -mkdir /mapr/cyber.mapr.cluster/user/mapr/datevg
   maprcli table create -path /mapr/cyber.mapr.cluster/user/mapr/datevg/payrolls-dn-scala-test -tabletype json
   mapr importJSON -src file:///tmp/dummy_data.json -dst /mapr/cyber.mapr.cluster/user/mapr/datevg/payrolls-dn-scala-test
+  
+  
+  Test MaprDB secondary index performance
   sudo yum install mapr-gateway
   mapr dbshell
   maprcli cluster gateway set -dstcluster cyber.mapr.cluster -gateways localhost
