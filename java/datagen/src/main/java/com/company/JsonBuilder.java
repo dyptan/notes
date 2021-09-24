@@ -15,9 +15,9 @@ import java.util.Random;
 
 public class JsonBuilder {
     public static void main(String[] args) throws IOException {
-        FileWriter fileWriter = new FileWriter("/tmp/dummy_data.json");
+        FileWriter fileWriter = new FileWriter(args[1]);
 
-        int iter = 1000000;
+        int iter = Integer.valueOf(args[0]);
         Iterator<Integer> random = new Random().ints(0, iter).iterator();
         Iterator<Integer> years = new Random().ints(2000, 2010).iterator();
         MockNeat mockNeat = MockNeat.threadLocal();
