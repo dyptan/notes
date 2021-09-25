@@ -72,7 +72,7 @@ class MyTests extends AnyFunSpec {
 
     it("adding already contained value should be ignored"){
       mySet + 1
-      assert(mySet(3)===true && mySet.contains(4)===true)
+      assert((mySet.getValues.count(x=>x==1)==1)===true)
     }
 
   }
