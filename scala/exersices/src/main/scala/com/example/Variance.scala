@@ -1,7 +1,11 @@
+package com.example
+
 object Variance {
 
   class Vehicle
+
   case object Bike extends Vehicle
+
   case object Car extends Vehicle
 
   class InvariantParking[T](var things: List[T]) {
