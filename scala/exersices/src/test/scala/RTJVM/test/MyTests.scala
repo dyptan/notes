@@ -1,7 +1,8 @@
-package com.example.test
+package RTJVM.test
 
-import com.example._
-import com.example.Variance._
+import RTJVM.{MySet, MySetImpl}
+import RTJVM._
+import RTJVM.Variance._
 import org.scalatest.funspec.AnyFunSpec
 
 class MyTests extends AnyFunSpec {

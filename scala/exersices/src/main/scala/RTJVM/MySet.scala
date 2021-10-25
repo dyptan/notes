@@ -1,4 +1,4 @@
-package com.example
+package RTJVM
 
 trait MySet[A] extends (A => Boolean) {
 
@@ -26,7 +26,7 @@ object MySet {
 
 case class MySetImpl[A](private val value: A) extends MySet[A]{
   private var values = value :: List.empty
-  private [example] def getValues = values
+  private [RTJVM] def getValues = values
 
   override def contains(elem: A): Boolean = values.contains(elem)
 
