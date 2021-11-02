@@ -1,0 +1,20 @@
+	
+Symptom:
+21/09/14 16:29:39 ERROR Executor: Exception in task 28.0 in stage 3.0 (TID 2943)
+java.io.IOException: Stream is corrupted
+at net.jpountz.lz4.LZ4BlockInputStream.refill(LZ4BlockInputStream.java:202)
+at net.jpountz.lz4.LZ4BlockInputStream.refill(LZ4BlockInputStream.java:228)
+at net.jpountz.lz4.LZ4BlockInputStream.read(LZ4BlockInputStream.java:157)
+at org.apache.spark.io.ReadAheadInputStream$1.run(ReadAheadInputStream.java:168)
+at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+at java.lang.Thread.run(Thread.java:748)
+
+Explanation
+the issue reported long ago https://issues.apache.org/jira/browse/SPARK-18105
+
+Resolution
+Upgrade to MEP 7.x (Spark 2.4.7). Fixed by https://issues.apache.org/jira/browse/SPARK-30225
+
+Workaround:
+spark.unsafe.sorter.spill.read.ahead.enabled=false
