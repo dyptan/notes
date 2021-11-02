@@ -1,5 +1,5 @@
 val array = Array(1,3,5,10)
-println("hello")
+//println("hello")
 
 def productImperative(input: Array[Int]) = {
   val result = new Array[Int](input.length)
@@ -16,4 +16,4 @@ def productImperative(input: Array[Int]) = {
 }
 
 
-//print(productOfValues(array))
+print(productImperative(array))
