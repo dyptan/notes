@@ -30,3 +30,5 @@ hive> CREATE EXTERNAL TABLE default.mytable_CDC
 
   CREATE EXTERNAL TABLE default.mytable2 (id string,age double,firstName string,lastName string) STORED BY "org.apache.hadoop.hive.maprdb.json.MapRDBJsonStorageHandler" TBLPROPERTIES("maprdb.table.name" = "/user/mapr/100894/mytable","maprdb.column.id" = "id");
 ```
+
+`sftp -P 115 ivand@sftp.mapr.com -D /servdata/support/maprpatches/v6.1.0/rpm/mapr-patch-6.1.0.20180926230239.GA-20211026074111.x86_64.rpm`
