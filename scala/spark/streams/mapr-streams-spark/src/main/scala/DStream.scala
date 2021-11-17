@@ -7,31 +7,47 @@ import org.apache.spark.streaming._
 
 object DStream {
 
-  val conf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount")
+  val conf = new SparkConf()
+  .setMaster("local[2]")
+  .setAppName("NetworkWordCount")
+  .set("spark.streaming.backpressure.enabled", "true")
+  .set("spark.streaming.kafka.maxRatePerPartition", "10")
+  .set("spark.streaming.kafka.consumer.poll.ms", "1000")
+  .set("spark.streaming.kafka.allowNonConsecutiveOffsets", "true")
+
   val streamingContext = new StreamingContext(conf, Seconds(1))
 
-  def init() {
+  def init(args: Array[String]): Unit = {
     val kafkaParams = Map[String, Object](
       "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
-      "group.id" -> "use_a_separate_group_id_for_each_stream",
-      "auto.offset.reset" -> "latest",
+      "group.id" -> args.lift(2).getOrElse("DStreamExample"),
+      "auto.offset.reset" -> args.lift(1).getOrElse("earliest"),
       "enable.auto.commit" -> (false: java.lang.Boolean)
+      // "max.poll.records" -> "100"
     )
 
-    val topics = Array("/user/mapr/pump:topic0")
+    val topics = Array(args(0))
     val stream = KafkaUtils.createDirectStream[String, String](
       streamingContext,
       PreferConsistent,
       Subscribe[String, String](topics, kafkaParams)
     )
 
-    stream.map(record => (record.key, record.value)).print()
-  }
+    stream.foreachRDD{
+      rdd => 
+        val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+        println(s"Ranges for batch: ${offsetRanges.mkString}")
+        rdd.foreach(println)
 
-  def main (args: Array[String]) {
-    init()
+        stream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)
+    }
+  }
+  // map(record => (record.key, record.value)).print()
+
+  def main (args: Array[String]) = {
+    init(args)
     streamingContext.start()
     streamingContext.awaitTermination()
   }

@@ -11,7 +11,7 @@ unique_brends = set(brends)
 
 myFile = open('deprecation_rates.csv', 'w')
 fieldnames = ['Brand', 'Model', 'Deprecation_rate']
-writer = csv.writer(myFile,delimiter=',', quotechar='"')
+writer = csv.writer(myFile, delimiter=',', quotechar='"')
 writer.writerow(fieldnames)
 
 for brend in unique_brends:
