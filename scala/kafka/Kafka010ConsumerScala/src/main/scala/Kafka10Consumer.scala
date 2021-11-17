@@ -13,7 +13,7 @@ object Kafka10Consumer {
     val kafkaParams = new ju.HashMap[String, Object]()
     kafkaParams.put("key.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer")
     kafkaParams.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
-    kafkaParams.put("enable.auto.commit", "true")
+    kafkaParams.put("enable.auto.commit", "false")
     kafkaParams.put("group.id", "Kafka10Consumer")
     // kafkaParams.put("max.partition.fetch.bytes", "5242880")
     kafkaParams.put("auto.offset.reset", args.lift(1).getOrElse("earliest"))
@@ -29,14 +29,23 @@ object Kafka10Consumer {
     consumer.subscribe(topics)
 
     println(s"subscribed to topics: $topics")
-    while (true) {
-      Thread.sleep(1000)
-      val records = consumer.poll(100)
-      println(s"records pulled: ${records.count()}")
-      records.iterator.asScala
-      .foreach(record => println(s"Partition: ${record.partition}, Value: ${record.value}, Offset: ${record.offset}"))
-
+    try {
+    
+      while (true) {
+        Thread.sleep(1000)
+        val records = consumer.poll(100)
+        println(s"records pulled: ${records.count()}")
+        records.iterator.asScala
+        .foreach(record => println(s"Partition: ${record.partition}, Value: ${record.value}, Offset: ${record.offset}"))
+        
+        consumer.commitAsync()
+      }
     }
+    finally {
+      consumer.close()
+    }
+
+  
     // // This is to test manual offset rewind (seek):
     // val currentOffsets = Map(topicPartition1 -> 0, topicPartition2 -> 0)
     // val toSeek = currentOffsets
@@ -60,5 +69,5 @@ object Kafka10Consumer {
     // }
 
 
-  }
+    }
 }

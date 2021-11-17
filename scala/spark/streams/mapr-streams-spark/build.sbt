@@ -23,8 +23,8 @@ val sparkVersion = "2.4.4.3-mapr-630"
  libraryDependencies += "org.apache.spark" %% "spark-core" % sparkVersion
 libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion
 libraryDependencies += "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion
-libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka-0-9" % sparkVersion
-libraryDependencies += "org.apache.kafka" % "kafka-clients" % "0.9.0.0"
+libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion
+// libraryDependencies += "org.apache.kafka" % "kafka-clients" % "0.9.0.0"
 
 val hadoopVersion="2.7.0-mapr-1803"
 libraryDependencies += "org.apache.hadoop" % "hadoop-common" % hadoopVersion

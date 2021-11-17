@@ -1,15 +1,15 @@
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.streaming.kafka09._
-import org.apache.spark.streaming.kafka09.LocationStrategies.PreferConsistent
-import org.apache.spark.streaming.kafka09.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010._
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 import org.apache.spark._
 import org.apache.spark.streaming._
 
 object DStream {
 
   val conf = new SparkConf()
-  .setMaster("local[2]")
-  .setAppName("NetworkWordCount")
+  .setMaster("local[*]")
+  .setAppName("DStreams")
   .set("spark.streaming.backpressure.enabled", "true")
   .set("spark.streaming.kafka.maxRatePerPartition", "10")
   .set("spark.streaming.kafka.consumer.poll.ms", "1000")
@@ -22,7 +22,7 @@ object DStream {
       "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
-      "group.id" -> "DStreamExample",
+      "group.id" -> "DStream",
       "auto.offset.reset" -> "earliest",
       "enable.auto.commit" -> (false: java.lang.Boolean)
       // "max.poll.records" -> "100"
