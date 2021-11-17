@@ -10,8 +10,7 @@ Build project with SBT:
 
 Or compile with unmanaged Spark deps:
 
-```scalac -classpath $(echo *.jar /opt/mapr/spark/spark-2.4.4/jars/*.jar | tr ' ' ':'):`mapr classpath` DStream.scala -d DStream.jar
-```
+```scalac -classpath $(echo *.jar /opt/mapr/spark/spark-2.4.4/jars/*.jar | tr ' ' ':'):`mapr classpath` DStream.scala -d DStream.jar```
 
 submit the jar to your cluster:
 
