@@ -22,8 +22,8 @@ object DStream {
       "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
-      "group.id" -> args.lift(2).getOrElse("DStreamExample"),
-      "auto.offset.reset" -> args.lift(1).getOrElse("earliest"),
+      "group.id" -> "DStreamExample",
+      "auto.offset.reset" -> "earliest",
       "enable.auto.commit" -> (false: java.lang.Boolean)
       // "max.poll.records" -> "100"
     )
