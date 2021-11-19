@@ -15,7 +15,7 @@ object Kafka10Consumer {
     kafkaParams.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
     kafkaParams.put("enable.auto.commit", "false")
     kafkaParams.put("group.id", "Kafka10Consumer")
-    // kafkaParams.put("max.partition.fetch.bytes", "5242880")
+    kafkaParams.put("max.poll.records", "10")
     kafkaParams.put("auto.offset.reset", args.lift(1).getOrElse("earliest"))
 
     // val topicPartition1 = new TopicPartition("/user/mapr/pump:topic0", 0)
