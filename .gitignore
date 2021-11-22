@@ -3,3 +3,4 @@
 *.class
 **/target/*
 !/.gitignore
+scala/spark/streams/mapr-streams-spark/Readme.md.orig
