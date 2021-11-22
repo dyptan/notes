@@ -1,7 +1,0 @@
-curl --location --request POST 'http://node6:8082/consumers/trimurti' --header 'Content-Type: application/vnd.kafka.json.v2+json' --header 'Accept: application/vnd.kafka.json.v2+json' --header 'Authorization: Basic bWFwcjptYXBy' --data '{"name":"myinstance","auto.offset.reset":"earliest","format":"json"}'
-
-curl --location --request POST 'http://node6:8082/consumers/trimurti/instances/myinstance/subscription' --header 'Content-Type: application/vnd.kafka.json.v2+json' --header 'Accept: application/vnd.kafka.json.v2+json' --header 'Authorization: Basic bWFwcjptYXBy' --data '{"topics": ["/streams/trimurti:topic0"]}'
-
-curl --location --request GET 'http://node6:8082/consumers/trimurti/instances/myinstance/offsets' --header 'Content-Type: application/vnd.kafka.json.v2+json' --header 'Accept: application/vnd.kafka.json.v2+json' --header 'Authorization: Basic bWFwcjptYXBy' --data '{"partitions":[{"topic":"/streams/trimurti:topic0","partition":0}]}'
-
-curl --location --request POST 'http://node6:8082/consumers/trimurti/instances/myinstance/positions' --header 'Content-Type: application/vnd.kafka.json.v2+json' --header 'Accept: application/vnd.kafka.json.v2+json' --header 'Authorization: Basic bWFwcjptYXBy' --data '{"offsets": [{"topic": "/streams/trimurti:topic0","partition": 0,"offset":16}]}'
