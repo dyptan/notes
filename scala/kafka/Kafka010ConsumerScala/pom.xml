@@ -13,7 +13,7 @@
 
         <!-- <hadoop.common>2.7.0-mapr-1808</hadoop.common>
         <hdfs.version>2.7.0-mapr-1808</hdfs.version> -->
-        <kafka.clients>1.1.1-mapr-1808</kafka.clients>
+        <kafka.clients>1.1.1-mapr-2104</kafka.clients>
         <scala.version>2.12.15</scala.version>
 
         <slf4j.version>1.7.21</slf4j.version>
