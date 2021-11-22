@@ -1,7 +1,7 @@
 You need to create Streams with specific name:
 
-'''maprcli stream create -path /user/mapr/pump -produceperm u:mapr -consumeperm u:mapr -topicperm u:mapr
-maprcli stream topic create -path /user/mapr/pump -topic topic0 -partitions 1'''
+```maprcli stream create -path /user/mapr/pump -produceperm u:mapr -consumeperm u:mapr -topicperm u:mapr
+maprcli stream topic create -path /user/mapr/pump -topic topic0 -partitions 1```
 
 Build project with SBT:
     
@@ -9,8 +9,8 @@ Build project with SBT:
 
 Or compile with unmanaged Spark deps:
 
-'''scalac -classpath $(echo *.jar /opt/mapr/spark/spark-2.4.4/jars/*.jar | tr ' ' ':'):`mapr classpath` DStream.scala -d DStream.jar
-'''
+```scalac -classpath $(echo *.jar /opt/mapr/spark/spark-2.4.4/jars/*.jar | tr ' ' ':'):`mapr classpath` DStream.scala -d DStream.jar
+```
 
 submit the jar to your cluster:
 
@@ -22,5 +22,5 @@ or as standalone app:
 
 populate the stream with some data:
 
-'''mapr perfproducer -ntopics 1 -path /user/mapr/pump -nmsgs 50 -npart 1 -rr'''
+```mapr perfproducer -ntopics 1 -path /user/mapr/pump -nmsgs 50 -npart 1 -rr```
     
