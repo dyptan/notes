@@ -6,8 +6,16 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.TopicPartition
 
 import scala.collection.JavaConverters._
+import java.nio.file.Paths
 
 object Kafka10Consumer {
+
+  val propertiesFile = new java.io.FileInputStream("consumer.properties")
+  val properties = new java.util.Properties()
+  properties.load(propertiesFile)
+
+  // val properties = scala.io.Source.fromFile("consumer.properties").getLines()
+
   def main(args: Array[String]): Unit = {
 
     val kafkaParams = new ju.HashMap[String, Object]()
@@ -15,13 +23,13 @@ object Kafka10Consumer {
     kafkaParams.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
     kafkaParams.put("enable.auto.commit", "false")
     kafkaParams.put("group.id", "Kafka10Consumer")
-    // kafkaParams.put("max.partition.fetch.bytes", "5242880")
+    kafkaParams.put("max.poll.records", "10")
     kafkaParams.put("auto.offset.reset", args.lift(1).getOrElse("earliest"))
 
     // val topicPartition1 = new TopicPartition("/user/mapr/pump:topic0", 0)
     // val topicPartition2 = new TopicPartition("/user/mapr/pump:topic0", 1)
 
-    val consumer = new KafkaConsumer[Any, Any](kafkaParams)
+    val consumer = new KafkaConsumer[Any, Any](properties)
 
     val topics = new ju.ArrayList[String];
     topics.add(args.lift(0).getOrElse("/user/mapr/pump:topic0"))
@@ -33,7 +41,7 @@ object Kafka10Consumer {
     
       while (true) {
         Thread.sleep(1000)
-        val records = consumer.poll(100)
+        val records = consumer.poll(10)
         println(s"records pulled: ${records.count()}")
         records.iterator.asScala
         .foreach(record => println(s"Partition: ${record.partition}, Value: ${record.value}, Offset: ${record.offset}"))

@@ -14,7 +14,7 @@ Or compile with unmanaged Spark deps:
 
 submit the jar to your cluster:
 
-'''/opt/mapr/spark/spark-2.4.4/bin/spark-submit --class Scala Scala.jar'''
+'''/opt/mapr/spark/spark-2.4.4/bin/spark-submit --class Scala DStream.jar'''
 
 populate the stream with some data:
 
