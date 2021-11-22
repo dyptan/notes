@@ -10,11 +10,10 @@ import java.nio.file.Paths
 
 object Kafka10Consumer {
 
-  val propertiesFile = new java.io.FileInputStream("consumer.properties")
+  val propertiesFile = new java.io.FileInputStream("conf/consumer.properties")
   val properties = new java.util.Properties()
   properties.load(propertiesFile)
 
-  // val properties = scala.io.Source.fromFile("consumer.properties").getLines()
 
   def main(args: Array[String]): Unit = {
 
