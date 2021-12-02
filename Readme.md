@@ -160,6 +160,8 @@ export SPARK_PRINT_LAUNCH_COMMAND=1
  --conf spark.hadoop.fs.mapr.trace=debug
  --conf spark.hadoop.fs.mapr.slowops.threshold=debug 
  --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
+ --conf spark.executor.extraJavaOptions="-XX:ErrorFile=targetDir/hs_err_pid_%p.log"
+ --conf spark.driver.extraJavaOptions="-verbose"
 ```
 
 If there is no external metastore:
