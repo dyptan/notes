@@ -1,6 +1,6 @@
 package RTJVM.test
 
-import RTJVM.{MySet, MySetImpl}
+import RTJVM.{MySet, NonEmptySet}
 import RTJVM._
 import RTJVM.Variance._
 import org.scalatest.funspec.AnyFunSpec
@@ -52,7 +52,7 @@ class MyTests extends AnyFunSpec {
   }
 
   describe("MySet"){
-    var mySet = MySetImpl(0)
+    var mySet = NonEmptySet(0)
     it("new Myset should CONTAIN value 0"){
       assert(mySet.contains(0)===true)
     }
