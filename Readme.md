@@ -1,7 +1,52 @@
 # 1. Contents
  - [Hadoop](#hadoop) 
  - [Linux](#linux) 
- - [Spark](#spark)
+ - [Spark](##spark)
+
+## 0.0 SPARK
+
+enable FS debug and OOM dump
+```
+export SPARK_PRINT_LAUNCH_COMMAND=1
+/opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
+ --conf spark.hadoop.fs.mapr.trace=debug
+ --conf spark.hadoop.fs.mapr.slowops.threshold=debug 
+ --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
+ --conf spark.executor.extraJavaOptions="-XX:ErrorFile=targetDir/hs_err_pid_%p.log"
+ --conf spark.driver.extraJavaOptions="-verbose"
+```
+
+If there is no external metastore:
+`./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
+
+run HS with spar-submit
+`\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
+
+Remove class from JIT compilations
+`--conf
+spark.executor.extraJavaOptions="-XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator  -XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator.*"
+`
+
+load some data
+```
+val fifaDF = spark.read.option("header", true).csv("/tmp/data.csv")
+import org.apache.spark.sql
+fifaDF.withColumn("age", $"age".cast(sql.types.IntegerType)).select("name", "club", "age").write.parquet("/tmp/fifa/par")
+val fifaFromParDF = spark.read.parquet("/tmp/fifa/par")
+val fifaAvgAge = fifaFromParDF.groupBy().avg("age")
+fifaAvgAge.toJSON.rdd.saveAsTextFile("/tmp/fifa/out_json")
+```
+
+Run multiple executors at once
+
+```
+for (( c=1; c<=5; c++ ))
+do
+  ./bin/spark-sql --master yarn -f ~/1097.sql --executor-memory 600Mb --executor-cores 1 &
+done
+
+while true; do ps -ef  | grep 24106; sleep 1; done
+```
 
 ## 1.1. MAPR
 
@@ -151,50 +196,6 @@ yarn application -appStates FINISHED -list
 hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0-mapr-1808.jar pi 4 100
 ```
 
-## 1.5. SPARK
-
-enable FS debug and OOM dump
-```
-export SPARK_PRINT_LAUNCH_COMMAND=1
-/opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
- --conf spark.hadoop.fs.mapr.trace=debug
- --conf spark.hadoop.fs.mapr.slowops.threshold=debug 
- --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
- --conf spark.executor.extraJavaOptions="-XX:ErrorFile=targetDir/hs_err_pid_%p.log"
- --conf spark.driver.extraJavaOptions="-verbose"
-```
-
-If there is no external metastore:
-`./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
-
-run HS with spar-submit
-`\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
-
-Remove class from JIT compilations
-`--conf
-spark.executor.extraJavaOptions="-XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator  -XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator.*"
-`
-
-load some data
-```
-val fifaDF = spark.read.option("header", true).csv("/tmp/data.csv")
-import org.apache.spark.sql
-fifaDF.withColumn("age", $"age".cast(sql.types.IntegerType)).select("name", "club", "age").write.parquet("/tmp/fifa/par")
-val fifaFromParDF = spark.read.parquet("/tmp/fifa/par")
-val fifaAvgAge = fifaFromParDF.groupBy().avg("age")
-fifaAvgAge.toJSON.rdd.saveAsTextFile("/tmp/fifa/out_json")
-```
-
-Run multiple executors at once
-
-```
-for (( c=1; c<=5; c++ ))
-do
-  ./bin/spark-sql --master yarn -f ~/1097.sql --executor-memory 600Mb --executor-cores 1 &
-done
-
-while true; do ps -ef  | grep 24106; sleep 1; done
-```
 
 ## 1.6. KAFKA
 
