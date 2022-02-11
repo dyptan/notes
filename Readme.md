@@ -1,10 +1,10 @@
 # 1. Contents
  - [Hadoop](#hadoop) 
  - [Linux](#linux) 
- - [Spark](#00-spark)
+ - [Spark](#spark)
  - [Mapr](#11-mapr)
 
-## 0.0 SPARK
+## SPARK
 
 enable FS debug and OOM dump
 ```
@@ -113,7 +113,7 @@ https://github.com/vinaymeghraj/myprojects/blob/master/YuCodesJava/src/main/java
 
 6) Output of command : rpm -qa | grep mapr 
 
-## 1.2. Linux 
+## Linux 
 
 #### 1.2.0.1. System resources limits check
 
@@ -181,7 +181,7 @@ ls tez_lib_bkp/ | sed 's/2.7.0-mapr-1710.jar/*/g' | while read file; do find /op
  kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
 ```
 
-## 1.4. HADOOP
+## HADOOP
 
 #### 1.4.0.1. Yarn
 
