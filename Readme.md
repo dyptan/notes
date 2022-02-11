@@ -1,7 +1,8 @@
 # 1. Contents
  - [Hadoop](#hadoop) 
  - [Linux](#linux) 
- - [Spark](##spark)
+ - [Spark](#00-spark)
+ - [Mapr](#11-mapr)
 
 ## 0.0 SPARK
 
