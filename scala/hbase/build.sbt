@@ -11,4 +11,4 @@ resolvers ++= Seq(
 // https://mvnrepository.com/artifact/org.apache.hbase/hbase-client
 libraryDependencies += "org.apache.hbase" % "hbase-client" % "2.2.2"
 
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.4"
+// libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.4"
