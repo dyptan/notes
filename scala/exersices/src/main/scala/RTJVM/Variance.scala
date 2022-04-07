@@ -8,36 +8,37 @@ object Variance {
 
   case object Car extends Vehicle
 
-  class InvariantParking[T](var things: List[T]) {
-    def park(vehicle: T): List[T] = {
+  class InvariantParking[T](var things: Seq[T]) {
+    def park(vehicle: T) = {
       things = vehicle +: things
       things
     }
 
-    def impound(vehicles: List[T]): List[T] = {
-      things = vehicles ::: things
+    def impound(vehicles: Seq[T]) = {
+      things = vehicles ++ things
       things
     }
 
-    def checkVehicles(conditions: T => Boolean): List[T] = {
+
+    def checkVehicles(conditions: T => Boolean) = {
       things = things.filter(conditions)
       things
     }
   }
 
 
-  class CovariantParking[+T](val things: List[T]) {
+  class CovariantParking[+T](val things: Seq[T]) {
     def park[A >: T](vehicle: A) = {
       val newThings = vehicle +: things
       newThings
     }
 
-    def impound[A >: T](vehicles: List[A]): List[A] = {
-      val newThings = vehicles ::: things
+    def impound[A >: T](vehicles: Seq[A]) = {
+      val newThings = vehicles ++ things
       newThings
     }
 
-    def checkVehicles(conditions: T => Boolean): List[T] = {
+    def checkVehicles(conditions: T => Boolean) = {
       val newThings = things.filter(conditions)
       newThings
     }
