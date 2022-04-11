@@ -164,7 +164,8 @@ rpm -qlp --scripts mapr-spark-thriftserver-2.4.4.0.201912121413-1.noarch.rpm
 
 ```
 for i in *.jar; do jar -tvf "$i" | grep -Hsi ClassName && echo "$i"; done
-grep -R org.apache.tez.runtime.api.Event ./
+or
+find /opt/mapr/ -name "*.jar" -exec sh -c 'jar -tf {}|grep -H --label {} org.apache.log4j.rolling.RollingFileAppender' \;
 ```
 
 #### 1.2.0.6. Replace Hadoop lib jars used by Tez with corresponding jars in Hadoop lib directories.
