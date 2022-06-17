@@ -7,6 +7,7 @@
 ## SPARK
 
 enable FS debug and OOM dump
+
 ```
 export SPARK_PRINT_LAUNCH_COMMAND=1
 /opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
@@ -18,25 +19,18 @@ export SPARK_PRINT_LAUNCH_COMMAND=1
 ```
 
 If there is no external metastore:
+
 `./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
 
 run HS with spar-submit
+
 `\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
 
 Remove class from JIT compilations
+
 `--conf
 spark.executor.extraJavaOptions="-XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator  -XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator.*"
 `
-
-load some data
-```
-val fifaDF = spark.read.option("header", true).csv("/tmp/data.csv")
-import org.apache.spark.sql
-fifaDF.withColumn("age", $"age".cast(sql.types.IntegerType)).select("name", "club", "age").write.parquet("/tmp/fifa/par")
-val fifaFromParDF = spark.read.parquet("/tmp/fifa/par")
-val fifaAvgAge = fifaFromParDF.groupBy().avg("age")
-fifaAvgAge.toJSON.rdd.saveAsTextFile("/tmp/fifa/out_json")
-```
 
 Run multiple executors at once
 
@@ -49,9 +43,9 @@ done
 while true; do ps -ef  | grep 24106; sleep 1; done
 ```
 
-## 1.1. MAPR
+## MAPR
 
-#### 1.1.0.1. Repositories
+#### Repositories
 
 ```
 wget -O - https://package.mapr.com/releases/pub/maprgpg.key | sudo apt-key add -
@@ -60,7 +54,7 @@ deb https://package.mapr.com/releases/v6.0.0/ubuntu binary trusty
 ```
 export MAPR_MAVEN_REPO=http://dfaf.mip.storage.hpecorp.net/artifactory/maven-corp/
 
-#### 1.1.0.2. Service management
+#### Service management
 
 ```
 maprcli node list -columns service
@@ -68,17 +62,21 @@ maprcli node services -cluster `hostname -f` restart
 maprcli node services -name hivemeta -action restart -nodes `hostname -f`
 ```
 
-#### 1.1.0.3. managing ElasticStreams
-create
+### Mapr Streams
+
+#### Ctreating Mapr Streams
+
+create stream
 ```
 maprcli stream create -path /user/mapr/pump -produceperm u:mapr -consumeperm u:mapr -topicperm u:mapr
 maprcli stream topic create -path /user/mapr/pump -topic topic0 -partitions 4
 ```
+
 Populate with data 
 ```
 while (:); do mapr perfproducer -ntopics 1 -path /user/mapr/pump -nmsgs 50 -npart 4 -rr true; done
 ```
-#### 1.1.0.4. debugging ES
+#### Troubleshooting Mapr Streams
 ```
 maprcli stream info -path /user/mapr/pump
 maprcli stream topic list -path /user/mapr/pump -json
@@ -88,7 +86,6 @@ maprcli stream assign list -path /user/mapr/pump -topic topic0 -json
 
 mapr streamanalyzer -path /user/mapr/pump -printMessages true
 ```
-
 
 1) Collecting cursor position, assignments, regeion with timestamps:
 ```
@@ -115,8 +112,9 @@ https://github.com/vinaymeghraj/myprojects/blob/master/YuCodesJava/src/main/java
 
 ## Linux 
 
-#### 1.2.0.1. System resources limits check
+#### System resources
 
+limits check
 ```
 ulimit -Ha (shows all global limits for current user)
 ps -U mapr -L | wc -l (will give you the number of running threads)
@@ -132,7 +130,7 @@ top -b -H -d 1 | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' >> /op
 top -b -d 1 | awk '{now=strftime("%Y-%m-%d %H:%M:%S "); print now $0}' | grep -v -e " 0\.0 *0\.0 " >> /opt/mapr/logs/top.processes.$HOSTNAME.out 2>&1 &
 ```
 
-#### 1.2.0.2. user managenent
+#### user managenent
 
 ```
 groupadd -g 5000 mapr
@@ -142,18 +140,22 @@ sudo usermod -g 1001 -u 1001 ivan
 ```
 
 #### SSH tricks
-##### Forward local port 2222 to ssh port on remote node
+Forward local port 2222 to ssh port on remote node (useful for scp uploads)
 ```
 ssh -g -L 2222:0.0.0.0:22 mapr@node14
 ```
+Login to VM machine via hypervisor as "jump" host
+```
+ssh -J mapr@work mapr@node4
+```
 
-#### 1.2.0.3. Add permanent routes in Centos7
+#### Add permanent routes in Centos7
 ```
 echo "192.168.0.0/24 via 192.168.33.1" | sudo tee --append /etc/sysconfig/network-scripts/route-enp0s8
 sudo systemctl restart network
 ```
 
-#### 1.2.0.4. Yum/RPM
+#### Yum/RPM
 
 cleanup cache
 ```
@@ -166,7 +168,7 @@ check the install script for package
 rpm -qlp --scripts mapr-spark-thriftserver-2.4.4.0.201912121413-1.noarch.rpm
 ```
 
-#### 1.2.0.5. Search class in multiple Jars
+#### Search class in multiple Jars
 
 ```
 for i in *.jar; do jar -tvf "$i" | grep -Hsi ClassName && echo "$i"; done
@@ -174,23 +176,15 @@ or
 find /opt/mapr/ -name "*.jar" -exec sh -c 'jar -tf {}|grep -H --label {} org.apache.log4j.rolling.RollingFileAppender' \;
 ```
 
-#### 1.2.0.6. Replace Hadoop lib jars used by Tez with corresponding jars in Hadoop lib directories.
+#### Replace Hadoop lib jars used by Tez with corresponding jars in Hadoop lib directories.
 
 ```
 ls tez_lib_bkp/ | sed 's/2.7.0-mapr-1710.jar/*/g' | while read file; do find /opt/mapr/hadoop -name $file | grep -v "test\|sources" |head -1 ; done | xargs cp -t /opt/mapr/tez/tez-0.8/lib/
 ```
 
-
-## 1.3. Kubernetes
-
-#### 1.3.0.1. Ping nodes
-```
- kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
-```
-
 ## HADOOP
 
-#### 1.4.0.1. Yarn
+#### Yarn
 
 ```
 yarn daemonlog -setlevel maprdemo:8088 org.apache.hadoop DEBUG
@@ -198,14 +192,14 @@ yarn logs -applicationId application_1528173243110_0007
 yarn application -appStates FINISHED -list
 ```
 
-#### 1.4.0.2. MapReduce
+### MapReduce
+Example job
 
 ```
 hadoop jar /opt/mapr/hadoop/hadoop-2.7.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0-mapr-1808.jar pi 4 100
 ```
 
-
-## 1.6. KAFKA
+### KAFKA
 
 ```
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
@@ -213,7 +207,7 @@ bin/kafka-topics.sh --list --zookeeper localhost:2181
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test
 ```
 
-## 1.7. HIVE
+### HIVE
 
 ```
 CREATE TABLE students (name VARCHAR(64), age INT, gpa DECIMAL(3, 2));
@@ -222,7 +216,7 @@ create view myview as select * from students where age > 33;
 
 CREATE OR REPLACE VIEW myview as select * from students where age < 33;
 ```
-## 1.8. OOZIE
+### OOZIE
 
 ```
 oozie admin -oozie http://localhost:11000/oozie -shareliblist hive*
@@ -245,7 +239,3 @@ $OOZIE_HOME/bin/oozie job -oozie="http://localhost:11000/oozie" -config ~/job.pr
 $OOZIE_HOME/bin/oozie job -info <id>
 $OOZIE_HOME/bin/oozie job -log <id>
 ```
-
-#### 1.8.0.1. Some sources
-
-curl -O https://raw.githubusercontent.com/amanthedorkknight/fifa18-all-player-statistics/master/2019/data.csv
