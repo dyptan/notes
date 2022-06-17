@@ -141,6 +141,12 @@ usermod -a -G sudo mapr
 sudo usermod -g 1001 -u 1001 ivan
 ```
 
+#### SSH tricks
+##### Forward local port 2222 to ssh port on remote node
+```
+ssh -g -L 2222:0.0.0.0:22 mapr@node14
+```
+
 #### 1.2.0.3. Add permanent routes in Centos7
 ```
 echo "192.168.0.0/24 via 192.168.33.1" | sudo tee --append /etc/sysconfig/network-scripts/route-enp0s8
