@@ -2,7 +2,7 @@
  - [Hadoop](#hadoop) 
  - [Linux](#linux) 
  - [Spark](#spark)
- - [Mapr](#11-mapr)
+ - [Mapr](#mapr)
 
 ## SPARK
 
