@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cyber
+spec:
+  template:
+    spec:
+      containers:
+        - name: cyber
+          image: diptan/cybertest
+          volumeMounts:
+          - name: volv
+            mountPath: /data
+      volumes:
+        - name: volv
+          persistentVolumeClaim:
+            claimName: local-path-pvc
+      restartPolicy: Never
+  backoffLimit: 2
