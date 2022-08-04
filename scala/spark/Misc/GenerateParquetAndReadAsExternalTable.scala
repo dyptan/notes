@@ -1,10 +1,12 @@
 
 val somerecords = Seq(Row(1, 1657817163),Row(2,1657817164))
 val myRDD = sc.parallelize(somerecords)
-
 val mySchema = StructType(Seq(StructField("id",IntegerType,true), StructField("time",IntegerType,true)))
-
 val myDF = spark.createDataFrame(myRDD, mySchema)
+
+// Shorthand
+val someOtherrecords = Seq((1, 1657817163),(2,1657817164))
+val myOtherDF = spark.createDataFrame(somerecords).toDF("id","time")
 
 val myDFtime = myDF.withColumn("time", to_timestamp(col("time")))
 
