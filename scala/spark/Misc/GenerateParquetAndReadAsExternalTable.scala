@@ -1,20 +1,21 @@
 
-val somerecords = Seq(Row(1, 1657817163),Row(2,1657817164))
-val myRDD = sc.parallelize(somerecords)
+import org.apache.spark.sql.types._
+import org.apache.spark.sql._
+
+val somerecords1 = Seq(Row(1, 1657817163),Row(2,1657817164))
+val myRDD = sc.parallelize(somerecords1)
 val mySchema = StructType(Seq(StructField("id",IntegerType,true), StructField("time",IntegerType,true)))
-val myDF = spark.createDataFrame(myRDD, mySchema)
+val myDF1 = spark.createDataFrame(myRDD, mySchema)
 
 // Shorthand
-val someOtherrecords = Seq((1, 1657817163),(2,1657817164))
-val myOtherDF = spark.createDataFrame(somerecords).toDF("id","time")
 
+val somerecords2 = Seq((1, "1999-01-01 00:00:00"),(2,"9999-01-01 00:00:00"))
+val myDF2 = spark.createDataFrame(somerecords2).toDF("id","time")
 val myDFtime = myDF.withColumn("time", to_timestamp(col("time")))
 
-myDFtime.write.mode("overwrite").parquet("tmp/myfile.par")
-val readFile = spark.read.parquet("tmp/myfile.par")
-readFile.show
+myDF.write.mode("overwrite").parquet("tmp/myfile.par")
 
-spark-sql>
-CREATE TABLE mytable (id Int, time Timestamp)
-STORES AS parquet
-LOCATION 'maprfs:///user/mapr/tmp/myfile.par';
+
+// CREATE TABLE mytable (id Int, time Timestamp)
+// STORED AS parquet
+// LOCATION 'maprfs:///user/mapr/tmp/myfile.par';
