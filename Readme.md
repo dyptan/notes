@@ -16,13 +16,14 @@ export SPARK_PRINT_LAUNCH_COMMAND=1
  --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
  --conf spark.executor.extraJavaOptions="-XX:ErrorFile=targetDir/hs_err_pid_%p.log"
  --conf spark.driver.extraJavaOptions="-verbose"
+ &> /tmp/file.log
 ```
 
 If there is no external metastore:
 
 `./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
 
-run HS with spar-submit
+run HS with spark-submit
 
 `\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
 
