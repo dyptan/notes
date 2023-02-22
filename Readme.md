@@ -53,7 +53,7 @@ find /opt/mapr/ -name "*.jar" -exec sh -c 'jar -tf {}|grep -H --label {} org.apa
 
 ## HADOOP
 
-## SPARK
+#### SPARK
 
 ```
 export SPARK_PRINT_LAUNCH_COMMAND=1
