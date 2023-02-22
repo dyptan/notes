@@ -3,31 +3,6 @@
  - [Linux](#linux) 
  - [Spark](#spark)
 
-## SPARK
-
-```
-export SPARK_PRINT_LAUNCH_COMMAND=1
-/opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
- --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
- --conf spark.executor.extraJavaOptions="-XX:ErrorFile=targetDir/hs_err_pid_%p.log"
- --conf spark.driver.extraJavaOptions="-verbose"
- &> /tmp/file.log
-```
-
-If there is no external metastore:
-
-`./bin/spark-shell --conf spark.sql.catalogImplementation=in-memory`
-
-run HS with spark-submit
-
-`\bin\spark-submit  --class org.apache.spark.deploy.history.HistoryServer spark-internal`
-
-Remove class from JIT compilations
-
-`--conf
-spark.executor.extraJavaOptions="-XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator  -XX:CompileCommand=exclude,org.apache.spark.util.SizeEstimator.*"
-`
-
 
 ## Linux 
 
@@ -78,6 +53,17 @@ find /opt/mapr/ -name "*.jar" -exec sh -c 'jar -tf {}|grep -H --label {} org.apa
 
 ## HADOOP
 
+## SPARK
+
+```
+export SPARK_PRINT_LAUNCH_COMMAND=1
+/opt/mapr/spark/spark-2.3.2/bin/run-example --master yarn --deploy-mode client SparkPi 10
+ --conf spark.executor.extraJavaOptions="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
+ --conf spark.executor.extraJavaOptions="-XX:ErrorFile=targetDir/hs_err_pid_%p.log"
+ --conf spark.driver.extraJavaOptions="-verbose"
+ &> /tmp/file.log
+```
+
 #### Yarn
 
 ```
@@ -86,7 +72,7 @@ yarn logs -applicationId application_1528173243110_0007
 yarn application -appStates FINISHED -list
 ```
 
-### KAFKA
+#### KAFKA
 
 ```
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
@@ -94,7 +80,7 @@ bin/kafka-topics.sh --list --zookeeper localhost:2181
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test
 ```
 
-### HIVE
+#### HIVE
 
 ```
 CREATE TABLE students (name VARCHAR(64), age INT, gpa DECIMAL(3, 2));
